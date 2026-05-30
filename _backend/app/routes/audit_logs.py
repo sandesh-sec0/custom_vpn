@@ -32,7 +32,7 @@ class AuditLogResponse(BaseModel):
     status_code: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class AuditLogListResponse(BaseModel):
@@ -44,7 +44,7 @@ class AuditLogListResponse(BaseModel):
     limit: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 @router.get("", response_model=AuditLogListResponse)
