@@ -56,7 +56,7 @@ async def login(
             value=token,
             httponly=True,
             secure=True,
-            samesite="lax",
+            samesite="none",
             max_age=86400  # 1 day matching token expiration
         )
 
@@ -91,7 +91,7 @@ async def logout(request: LogoutRequest, response: Response):
         key="access_token",
         httponly=True,
         secure=True,
-        samesite="lax"
+        samesite="none"
     )
     return {"message": "Logged out successfully"}
 
