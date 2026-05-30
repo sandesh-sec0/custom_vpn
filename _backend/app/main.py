@@ -73,6 +73,9 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:5173",
+	"http://localhost:5174",
+        "https://custom-vpn.vercel.app",
+        "https://custom-vpn-git-main-sandesh-s-projects1.vercel.app",
     ],  # Vite default ports
     allow_credentials=True,
     allow_methods=["*"],
@@ -131,7 +134,7 @@ async def get_csrf_token(response: Response):
     response.set_cookie(
         key="csrf_token",
         value=token,
-        httponly=True,
+        httponly=False,
         secure=True,
         samesite="none",
     )
