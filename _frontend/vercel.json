@@ -5,7 +5,7 @@
       "destination": "https://custom-vpn-backend.onrender.com/api/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
