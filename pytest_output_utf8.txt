@@ -1,0 +1,224 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-7.4.3, pluggy-1.6.0
+rootdir: G:\Studies\7th_sem\project_report\vpn_prototype_v3_AG
+plugins: anyio-4.13.0
+collected 39 items
+
+_custom_ssl_vpn\tests\test_auth.py .F.......F.                           [ 28%]
+_custom_ssl_vpn\tests\test_protocol.py ...........                       [ 56%]
+_custom_ssl_vpn\tests\test_security.py ........                          [ 76%]
+_custom_ssl_vpn\tests\test_session.py FFFF..FFF                          [100%]
+
+================================== FAILURES ===================================
+______________ TestAuthManager.test_lockout_expires_after_window ______________
+
+self = <tests.test_auth.TestAuthManager testMethod=test_lockout_expires_after_window>
+
+    def test_lockout_expires_after_window(self):
+        """After a lockout window elapses, authentication succeeds again."""
+        ip = "192.168.1.100"
+        # Force into lockout by directly manipulating the internal record
+        from _custom_ssl_vpn.server.auth import AuthAttemptRecord
+        self.auth._attempts[ip] = AuthAttemptRecord(
+            failure_timestamps=[],
+            locked_until=time.time() - 1  # Already expired
+        )
+        # Should succeed now that lockout has ended
+        result = self.auth.authenticate("testuser", "Secure1234!", ip)
+>       self.assertTrue(result)
+E       AssertionError: 0 is not true
+
+_custom_ssl_vpn\tests\test_auth.py:103: AssertionError
+_____________ TestAuthManager.test_valid_credentials_authenticate _____________
+
+self = <tests.test_auth.TestAuthManager testMethod=test_valid_credentials_authenticate>
+
+    def test_valid_credentials_authenticate(self):
+        """Correct username and password returns True without raising."""
+        result = self.auth.authenticate("testuser", "Secure1234!", "10.0.0.1")
+>       self.assertTrue(result)
+E       AssertionError: 0 is not true
+
+_custom_ssl_vpn\tests\test_auth.py:54: AssertionError
+______________ TestSessionCreation.test_active_count_increments _______________
+
+self = <tests.test_session.TestSessionCreation testMethod=test_active_count_increments>
+
+    def test_active_count_increments(self):
+        """The active session count reflects the number of created sessions."""
+>       manager = _make_manager()
+
+_custom_ssl_vpn\tests\test_session.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 10, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+____________ TestSessionCreation.test_create_session_returns_uuid _____________
+
+self = <tests.test_session.TestSessionCreation testMethod=test_create_session_returns_uuid>
+
+    def test_create_session_returns_uuid(self):
+        """A new session is assigned a valid UUID4 string as its session_id."""
+>       manager = _make_manager()
+
+_custom_ssl_vpn\tests\test_session.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 10, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+________ TestSessionCreation.test_get_existing_session_returns_session ________
+
+self = <tests.test_session.TestSessionCreation testMethod=test_get_existing_session_returns_session>
+
+    def test_get_existing_session_returns_session(self):
+        """A session retrieved by its ID is the same object that was created."""
+>       manager = _make_manager()
+
+_custom_ssl_vpn\tests\test_session.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 10, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+________ TestSessionCreation.test_get_nonexistent_session_returns_none ________
+
+self = <tests.test_session.TestSessionCreation testMethod=test_get_nonexistent_session_returns_none>
+
+    def test_get_nonexistent_session_returns_none(self):
+        """Requesting a session ID that was never created returns None."""
+>       manager = _make_manager()
+
+_custom_ssl_vpn\tests\test_session.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 10, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+___________ TestCapacityEnforcement.test_max_sessions_raises_error ____________
+
+self = <tests.test_session.TestCapacityEnforcement testMethod=test_max_sessions_raises_error>
+
+    def test_max_sessions_raises_error(self):
+        """Creating a session beyond the max_clients limit raises SessionError."""
+        from _custom_ssl_vpn.server.session import SessionManager
+    
+        session_limit = 2
+>       manager = _make_manager(max_clients=session_limit)
+
+_custom_ssl_vpn\tests\test_session.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 2, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+___________ TestCapacityEnforcement.test_remove_session_frees_slot ____________
+
+self = <tests.test_session.TestCapacityEnforcement testMethod=test_remove_session_frees_slot>
+
+    def test_remove_session_frees_slot(self):
+        """Removing a session allows a new one to be created at the limit boundary."""
+>       manager = _make_manager(max_clients=1)
+
+_custom_ssl_vpn\tests\test_session.py:126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 1, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+_____________________ TestThreadSafety.test_thread_safety _____________________
+
+self = <tests.test_session.TestThreadSafety testMethod=test_thread_safety>
+
+    def test_thread_safety(self):
+        """50 concurrent threads creating sessions all succeed without data corruption."""
+>       manager = _make_manager(max_clients=60)
+
+_custom_ssl_vpn\tests\test_session.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+max_clients = 60, timeout = 3600
+
+    def _make_manager(max_clients: int = 10, timeout: int = 3600):
+        """Factory that creates a SessionManager with a mocked logger to avoid file I/O."""
+        with patch("_custom_ssl_vpn.server.session.get_logger") as mock_get_logger:
+            mock_logger = MagicMock()
+            mock_get_logger.return_value = mock_logger
+    
+            from _custom_ssl_vpn.server.session import SessionManager
+>           manager = SessionManager(max_clients=max_clients, session_timeout_seconds=timeout)
+E           TypeError: SessionManager.__init__() missing 2 required positional arguments: 'backend_url' and 'monitor_secret'
+
+_custom_ssl_vpn\tests\test_session.py:30: TypeError
+=========================== short test summary info ===========================
+FAILED _custom_ssl_vpn/tests/test_auth.py::TestAuthManager::test_lockout_expires_after_window
+FAILED _custom_ssl_vpn/tests/test_auth.py::TestAuthManager::test_valid_credentials_authenticate
+FAILED _custom_ssl_vpn/tests/test_session.py::TestSessionCreation::test_active_count_increments
+FAILED _custom_ssl_vpn/tests/test_session.py::TestSessionCreation::test_create_session_returns_uuid
+FAILED _custom_ssl_vpn/tests/test_session.py::TestSessionCreation::test_get_existing_session_returns_session
+FAILED _custom_ssl_vpn/tests/test_session.py::TestSessionCreation::test_get_nonexistent_session_returns_none
+FAILED _custom_ssl_vpn/tests/test_session.py::TestCapacityEnforcement::test_max_sessions_raises_error
+FAILED _custom_ssl_vpn/tests/test_session.py::TestCapacityEnforcement::test_remove_session_frees_slot
+FAILED _custom_ssl_vpn/tests/test_session.py::TestThreadSafety::test_thread_safety
+======================== 9 failed, 30 passed in 2.06s =========================
