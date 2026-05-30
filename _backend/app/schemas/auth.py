@@ -33,7 +33,7 @@ class UserResponse(BaseModel):
     is_active: bool
 
     class Config:
-        orm_mode = True  # Allows building from ORM objects
+       from_attributes = True  # Allows building from ORM objects
 
 
 class LoginResponse(BaseModel):
