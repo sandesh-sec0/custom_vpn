@@ -73,15 +73,12 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:5173",
-        "http://localhost:5174",
-        "https://custom-vpn.vercel.app",
-        "https://custom-vpn-git-main-sandesh-s-projects1.vercel.app",
-    ],
+    ],  # Vite default ports
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Configure CORS (allow all Vercel URLs and localhost)
+
 
 @app.middleware("http")
 async def csrf_middleware(request: Request, call_next):
@@ -136,7 +133,7 @@ async def get_csrf_token(response: Response):
         value=token,
         httponly=True,
         secure=True,
-        samesite="none",
+        samesite="lax",
     )
     return {"csrfToken": token}
 
