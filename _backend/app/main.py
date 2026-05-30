@@ -83,14 +83,12 @@ app.add_middleware(
 )
 
 
+
 @app.middleware("http")
 async def csrf_middleware(request: Request, call_next):
-    """
-    C3: CSRF Protection middleware using Double Submit Cookie pattern.
-    Validates that X-CSRF-Token header matches the HttpOnly csrf_token cookie.
-    """
-    if request.method not in ["GET", "OPTIONS", "HEAD", "TRACE"]:
-        # Exempt specific paths or internal secrets
+    if request.method == "OPTIONS":
+        return await call_next(request)
+    if request.method not in ["GET", "HEAD", "TRACE"]:
         is_exempt = (
             request.url.path in ["/api/csrf-token", "/api/auth/login"] or
             request.headers.get("X-Monitor-Secret") == "default_unsafe_monitor_secret_123"
@@ -104,7 +102,7 @@ async def csrf_middleware(request: Request, call_next):
                     content={"detail": "CSRF token missing or invalid"}
                 )
     return await call_next(request)
-
+              
 
 # Exception handlers
 @app.exception_handler(APIException)
