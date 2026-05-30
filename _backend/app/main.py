@@ -75,6 +75,7 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost:5174",
         "https://custom-vpn.vercel.app",
+        "https://custom-cjrq5no9o-sandesh-s-projects1.vercel.app",
     ],  # Vite default ports
     allow_credentials=True,
     allow_methods=["*"],
