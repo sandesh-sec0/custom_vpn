@@ -85,7 +85,7 @@ async def list_services(
     items = query.offset(skip).limit(limit).all()
     
     return {
-        "items": items,
+        "items": [ServiceResponse.model_validate(item) for item in items],
         "total": total,
         "skip": skip,
         "limit": limit
