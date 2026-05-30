@@ -133,7 +133,7 @@ async def get_csrf_token(response: Response):
         value=token,
         httponly=True,
         secure=True,
-        samesite="lax",
+        samesite="none",
     )
     return {"csrfToken": token}
 
