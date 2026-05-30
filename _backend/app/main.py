@@ -68,20 +68,15 @@ app = FastAPI(
 )
 
 # Configure CORS (allow frontend only, not *)
+
+# Configure CORS (allow all Vercel URLs and localhost)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "https://custom-vpn.vercel.app",
-        "https://custom-cjrq5no9o-sandesh-s-projects1.vercel.app",
-    ],  # Vite default ports
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:(3000|5173|5174)",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.middleware("http")
 async def csrf_middleware(request: Request, call_next):
