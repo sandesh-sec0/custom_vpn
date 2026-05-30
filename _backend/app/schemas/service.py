@@ -58,7 +58,7 @@ class UserPermissionResponse(UserPermissionBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PermissionDetailResponse(BaseModel):
@@ -72,7 +72,7 @@ class PermissionDetailResponse(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # Aggregated Response Schema

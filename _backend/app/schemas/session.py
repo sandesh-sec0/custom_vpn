@@ -25,7 +25,7 @@ class SessionResponse(BaseModel):
     bytes_down: int
 
     class Config:
-        orm_mode = True
+       from_attributes = True
 
 
 class SessionListResponse(BaseModel):
